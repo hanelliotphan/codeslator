@@ -8,8 +8,8 @@
 # ---------------------------------------------------------------------------- #
 # login.py                                                                     #
 #                                                                              #
-# This file is for setting up Hugging Face & OpenAI login using HF_TOKEN and   #
-# OPENAI_API_KEY environment variables.                                        #
+# This file is for setting up Anthropic & OpenAI login using                   # 
+# ANTHROPIC_API_KEY and OPENAI_API_KEY environment variables.                  #
 # ---------------------------------------------------------------------------- #
 
 
@@ -18,29 +18,15 @@
 # ---------------------------------------------------------------------------- #
 
 import logging
-import huggingface_hub
 import sys
 
+from anthropic import Anthropic
 from openai import OpenAI
 
 
 # ---------------------------------------------------------------------------- #
 #                                LOGIN FUNCTIONS                               #
 # ---------------------------------------------------------------------------- #
-
-def hf_login(token):
-    """
-    hf_login -- Log in to Hugging Face interface using Hugging Face access token
-
-    Documentation: https://huggingface.co/docs/huggingface_hub/en/package_reference/authentication#huggingface_hub.login
-    """
-    try:
-        huggingface_hub.login(token=token)
-        logging.info(msg=f"[login.py] hf_login: Successfully logged in to Hugging Face.")
-    except Exception as e:
-        logging.critical(msg=f"[login.py] hf_login: Cannot log in to Hugging Face. Error message: {e}")
-        sys.exit(-1)
-
 
 def openai_login(api_key):
     """
@@ -56,3 +42,19 @@ def openai_login(api_key):
         logging.critical(msg=f"[login.py] openai_login: Cannot log in to OpenAI. Error message: {e}")
         sys.exit(-1)
     return openai_client
+
+
+def anthropic_login(api_key):
+    """
+    anthropic_login -- Log in to Anthropic interface using Anthropic API key
+
+    Documentation: https://docs.anthropic.com/en/api/getting-started#authentication
+    """
+    anthropic_client = Anthropic(api_key=api_key)
+    try:
+        anthropic_client.models.list()
+        logging.info(msg="[login.py] anthropic_login: Successfully logged in to Anthropic")
+    except Exception as e:
+        logging.critical(msg=f"[login.py] anthropic_login: Cannot log in to Anthropic. Error message: {e}")
+        sys.exit(-1)
+    return anthropic_client
