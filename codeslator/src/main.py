@@ -20,7 +20,7 @@ import argparse
 
 from utils.file_processor import read_input_file, process_output_code, get_file_extension, write_output_file
 from utils.code_processor import get_system_message, get_user_prompt
-from utils.model_processor import get_model_translator
+from utils.model_processor import get_model_name, get_model_translator
 
 
 # ---------------------------------------------------------------------------- #
@@ -82,20 +82,21 @@ def main():
     args = parser.parse_args()
 
     # Initialize required variables
-    code_filepath = args.file
-    from_language = args.from_language
-    to_language = args.to_language
+    code_filepath = args.file.strip()
+    from_language = args.from_language.strip()
+    to_language = args.to_language.strip()
     default_model_type = "gpt-4o"
-    generative_model = str(args.model) if args.model else default_model_type
+    generative_model_type = str(args.model).strip() if args.model else default_model_type
+    generative_model_name = get_model_name(model_type=generative_model_type)
     code_file_extension = get_file_extension(to_language.lower())
-    output_filepath = "./files/result_code" + code_file_extension
+    output_filepath = f"./files/result_code_by_{generative_model_name}" + code_file_extension
 
     # Codeslator streamline
     main_streamline(
         code_filepath=code_filepath,
         from_language=from_language,
         to_language=to_language,
-        generative_model=generative_model,
+        generative_model=generative_model_type,
         output_code_filepath=output_filepath
     )
 

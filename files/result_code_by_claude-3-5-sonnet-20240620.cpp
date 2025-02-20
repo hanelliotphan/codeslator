@@ -1,35 +1,38 @@
-
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 class SudokuSolver {
-public:
+private:
     std::vector<std::vector<char>> board;
 
+public:
     void solveSudoku(std::vector<std::vector<char>>& board) {
-        this->board = std::move(board);
+        this->board = board;
         solve();
-        board = std::move(this->board);
+        board = this->board;
     }
 
 private:
     std::pair<int, int> findCellToFill() {
-        for (int row = 0; row < 9; ++row)
-            for (int col = 0; col < 9; ++col)
-                if (board[row][col] == '.')
+        for (int row = 0; row < 9; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                if (board[row][col] == '.') {
                     return {row, col};
+                }
+            }
+        }
         return {-1, -1};
     }
 
     bool solve() {
         auto [row, col] = findCellToFill();
-        if (row == -1)
-            return true;
+        if (row == -1 && col == -1) return true;
+
         for (char num = '1'; num <= '9'; ++num) {
             if (isValid(row, col, num)) {
                 board[row][col] = num;
-                if (solve())
-                    return true;
+                if (solve()) return true;
                 board[row][col] = '.';
             }
         }
@@ -37,11 +40,24 @@ private:
     }
 
     bool isValid(int row, int col, char ch) {
-        auto getRange = [](int x) { return std::vector<int>{x - x % 3, x - x % 3 + 1, x - x % 3 + 2}; };
-        
-        for (int i = 0; i < 9; ++i)
-            if (board[row][i] == ch || board[i][col] == ch || board[getRange(row)[i/3]][getRange(col)[i%3]] == ch)
-                return false;
+        return isRowValid(row, ch) && isColValid(col, ch) && isSquareValid(row, col, ch);
+    }
+
+    bool isRowValid(int row, char ch) {
+        return std::none_of(board[row].begin(), board[row].end(), [ch](char c) { return c == ch; });
+    }
+
+    bool isColValid(int col, char ch) {
+        return std::none_of(board.begin(), board.end(), [col, ch](const auto& row) { return row[col] == ch; });
+    }
+
+    bool isSquareValid(int row, int col, char ch) {
+        int startRow = row - row % 3, startCol = col - col % 3;
+        for (int r = 0; r < 3; ++r) {
+            for (int c = 0; c < 3; ++c) {
+                if (board[startRow + r][startCol + c] == ch) return false;
+            }
+        }
         return true;
     }
 };
@@ -63,8 +79,9 @@ int main() {
     solver.solveSudoku(sudoku_board);
 
     for (const auto& row : sudoku_board) {
-        for (char cell : row)
-            std::cout << cell << ' ';
+        for (char c : row) {
+            std::cout << c << ' ';
+        }
         std::cout << '\n';
     }
 
