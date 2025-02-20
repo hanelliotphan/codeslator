@@ -22,6 +22,7 @@ import os
 from utils.login import anthropic_login, openai_login
 from utils.file_processor import read_input_file, process_output_code, get_file_extension, write_output_file
 from utils.code_processor import get_system_message, get_user_prompt, translate_code_gpt, translate_code_claude
+from utils.model_processor import get_model
 from models.gpt4 import gpt4_stream
 from models.claude3 import claude3_stream
 
@@ -83,9 +84,8 @@ def main():
     code_filepath = args.file
     from_language = args.from_language
     to_language = args.to_language
-    gpt4_model = "gpt-4o"
-    claude3_model = "claude-3-5-sonnet-20240620"
-    generative_model = claude3_model if args.model else gpt4_model
+    default_model_type = "gpt-4o"
+    generative_model = get_model(str(args.model).lower()) if args.model else get_model(default_model_type.lower())
     output_filepath = "./result_code" + get_file_extension(to_language.lower())
 
     # Codeslator streamline
