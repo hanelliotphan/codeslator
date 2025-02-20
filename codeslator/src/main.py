@@ -21,7 +21,7 @@ import os
 
 from utils.login import anthropic_login, openai_login
 from utils.file_processor import read_input_file, process_output_code, get_file_extension, write_output_file
-from utils.code_processor import get_system_message, get_user_prompt
+from utils.code_processor import get_system_message, get_user_prompt, translate_code_gpt, translate_code_claude
 from models.gpt4 import gpt4_stream
 from models.claude3 import claude3_stream
 
