@@ -46,38 +46,15 @@ def get_model_name(model_type):
     return models[model_type]
 
 
-def get_model_api_key_var(model_type):
-    """
-    get_model_api_key_var -- Get the mode API key environment variables from 
-        the input model type
-    """
-    model_api_key_vars = {
-        "gpt-4o": "OPENAI_API_KEY",
-        "claude-3": "ANTHROPIC_API_KEY"
-    }
-    if model_type not in model_api_key_vars:
-        logging.error(msg="[model_processor.py] get_model_api_key_var: The model you have chosen is not currently supported. Please choose from the following options:")
-        for model in model_api_key_vars.keys():
-            logging.info(msg=f"- {model.capitalize()}")
-        sys.exit(1)
-    return model_api_key_vars[model_type]
-
-
-def get_model_api_key(model_type):
-    """
-    get_model_api_key -- Get the model API key from input model type
-    """
-    return os.environ.get(get_model_api_key_var(model_type=model_type))
-
-
 def get_model_client(model_type):
     """
     get_model_client -- Get the model client from input model type
     """
-    model_api_key = get_model_api_key(model_type=model_type)
     model_clients =  {
-        "gpt-4o": openai_login(api_key=model_api_key),
-        "claude-3": anthropic_login(api_key=model_api_key)
+        "gpt-4o": openai_login(api_key=os.environ.get("OPENAI_API_KEY")) 
+            if model_type == "gpt-4o" else None,
+        "claude-3": anthropic_login(api_key=os.environ.get("ANTHROPIC_API_KEY")) 
+            if model_type == "claude-3" else None
     }
     if model_type not in model_clients:
         logging.error(msg="[model_processor.py] get_model_client: The model you have chosen is not currently supported. Please choose from the following options:")
@@ -92,20 +69,20 @@ def get_model_stream(model_type, system_message, user_prompt):
     get_model_stream -- Get the model stream from input model type
     """
     model_client = get_model_client(model_type=model_type)
-    model_name = get_model_name(model_type=model_name)
+    model_name = get_model_name(model_type=model_type)
     model_streams = {
         "gpt-4o": gpt4_stream(
             openai_client=model_client,
             gpt4_model=model_name,
             system_message=system_message,
             user_prompt=user_prompt
-        ),
+        ) if model_type == "gpt-4o" else None,
         "claude-3": claude3_stream(
             anthropic_client=model_client,
             claude_model=model_name,
             system_message=system_message,
             user_prompt=user_prompt
-        )
+        ) if model_type == "claude-3" else None
     }
     if model_type not in model_streams:
         logging.error(msg="[model_processor.py] get_model_stream: The model you have chosen is not currently supported. Please choose from the following options:")
@@ -125,8 +102,10 @@ def get_model_translator(model_type, system_message, user_prompt):
         user_prompt=user_prompt
     )
     model_translators = {
-        "gpt-4o": translate_code_gpt(gpt_stream=stream),
+        "gpt-4o": translate_code_gpt(gpt_stream=stream) 
+            if model_type == "gpt-4o" else None,
         "claude-3": translate_code_claude(claude_stream=stream)
+            if model_type == "claude-3" else None
     }
     if model_type not in model_translators:
         logging.error(msg="[model_processor.py] get_model_stream: The model you have chosen is not currently supported. Please choose from the following options:")
