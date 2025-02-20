@@ -20,7 +20,8 @@ import argparse
 import os
 
 from utils.login import anthropic_login, openai_login
-from utils.file_processor import process_output_code, get_file_extension, write_output_file
+from utils.file_processor import read_input_file, process_output_code, get_file_extension, write_output_file
+from utils.code_processor import get_system_message, get_user_prompt
 from models.gpt4 import gpt4_stream
 from models.claude3 import claude3_stream
 
@@ -42,7 +43,24 @@ def main_streamline(
     main_streamline -- Streamline the end-to-end process of the Codeslator 
     project
     """
-    # TODO
+    # Login to Anthropic & OpenAI
+    anthropic_client = anthropic_login(api_key=anthropic_api_key)
+    openai_client = openai_login(api_key=openai_api_key)
+
+    # Read the code from file
+    code_to_translate = read_input_file(filepath=code_filepath)
+
+    # Set up system message and user prompt
+    messages = [
+        {"role": "system", "content": get_system_message(from_language=from_language, to_language=to_language)},
+        {"role": "user", "content": get_user_prompt(code_to_translate=code_to_translate, from_language=from_language, to_language=to_language)}
+    ]
+
+    # TODO: Generate translated code 
+
+    # TODO: Process output code
+
+    # TODO: Write output code to file
 
 
 def main():
