@@ -26,6 +26,47 @@ import sys
 #                          FILE PROCESSING FUNCTIONS                           #
 # ---------------------------------------------------------------------------- #
 
+
+def process_output_code(code_string):
+    """
+    process_output_code -- Process the output code to ensure it is executable
+    """
+    code_lines = code_string.split("\n")
+    for i in range(len(code_lines)):
+        if "```" in code_lines[i]:
+            code_lines[i] = ""
+    return "\n".join(code_lines)
+
+
+def get_file_extension(code_language):
+    """
+    get_file_extension -- Get file extension based on the chosen code language
+    """
+    extensions = {
+        "c": ".c",
+        "c++": ".cpp",
+        "c#": ".cs",
+        "dart": ".dart",
+        "elixir": ".ex",
+        "erlang": ".erl",
+        "go": ".go",
+        "golang": ".go",
+        "java": ".java",
+        "javascript": ".js",
+        "kotlin": ".kt",
+        "php": ".php",
+        "python2": ".py",
+        "python3": ".py",
+        "racket": ".rkt",
+        "ruby": ".rb",
+        "rust": ".rs",
+        "scala": ".scala",
+        "swift": ".swift",
+        "typescript": ".ts"
+    }
+    return extensions[code_language]
+
+
 def generate_output_file(filepath, output):
     """
     generate_output_file -- Write output to file
