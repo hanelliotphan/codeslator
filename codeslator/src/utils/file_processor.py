@@ -29,6 +29,9 @@ def read_input_file(filepath):
     """
     read_input_file -- Read content of file
     """
+    with open(filepath, 'r') as file:
+        content = file.read()
+        return content
 
 
 def process_output_code(code_string):
