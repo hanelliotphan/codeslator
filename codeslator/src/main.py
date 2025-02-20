@@ -86,7 +86,8 @@ def main():
     to_language = args.to_language
     default_model_type = "gpt-4o"
     generative_model = get_model(str(args.model).lower()) if args.model else get_model(default_model_type.lower())
-    output_filepath = "./result_code" + get_file_extension(to_language.lower())
+    code_file_extension = get_file_extension(to_language.lower())
+    output_filepath = "./result_code" + code_file_extension
 
     # Codeslator streamline
     main_streamline(
