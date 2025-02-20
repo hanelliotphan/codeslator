@@ -17,7 +17,6 @@
 #                               IMPORT LIBRARIES                               #
 # ---------------------------------------------------------------------------- #
 
-import openai
 import logging
 import sys
 
@@ -25,6 +24,11 @@ import sys
 # ---------------------------------------------------------------------------- #
 #                          FILE PROCESSING FUNCTIONS                           #
 # ---------------------------------------------------------------------------- #
+
+def read_input_file(filepath):
+    """
+    read_input_file -- Read content of file
+    """
 
 
 def process_output_code(code_string):
@@ -64,10 +68,15 @@ def get_file_extension(code_language):
         "swift": ".swift",
         "typescript": ".ts"
     }
+    if code_language not in extensions:
+        logging.error(msg="[file_processor.py] get_file_extension: The coding language you have chosen is not currently supported. Please choose from the following options:")
+        for language in extensions.keys():
+            logging.info(msg=f"- {language.capitalize()}")
+        sys.exit(1)
     return extensions[code_language]
 
 
-def generate_output_file(filepath, output):
+def write_output_file(filepath, output):
     """
     generate_output_file -- Write output to file
     """
