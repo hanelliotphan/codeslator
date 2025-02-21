@@ -1,3 +1,6 @@
+# Problem: https://leetcode.com/problems/sudoku-solver/description/
+# Solution's Author: Han-Elliot Phan (hanelliotphan@gmail.com)
+
 class SudokuSolver:
     def solveSudoku(self, board) -> None:
         self.board = board
