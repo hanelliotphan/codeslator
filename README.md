@@ -42,11 +42,11 @@ Finally, run the `main.py` script to execute the software
 $ python ./codeslator/src/main.py -f <your code filepath> -fl <your code language> -tl <language to translate your code to> -m <your desired model>
 ```
 where
-- `-f / --file`: The filepath of the code to translate.
-- `-fl / --from_language`: The language to translate the code from (please see 
+- `-f / --file` (required): The filepath of the code to translate.
+- `-fl / --from_language` (required): The language to translate the code from (please see 
 the supported languaged below).
-- `-tl / --to_language`: The language to translate the code to.
-- `-m / --model`: The model to use for the code translation.
+- `-tl / --to_language` (required): The language to translate the code to.
+- `-m / --model` (optional): The model to use for the code translation. By default, `gpt-4o` will be used.
 
 You will find the result code file under the `./files` folder.
 
