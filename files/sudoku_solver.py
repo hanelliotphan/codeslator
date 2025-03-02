@@ -1,5 +1,6 @@
 # Problem: https://leetcode.com/problems/sudoku-solver/description/
 # Solution's Author: Han-Elliot Phan (hanelliotphan@gmail.com)
+# Solution Year: 2020
 
 class SudokuSolver:
     def solveSudoku(self, board) -> None:
