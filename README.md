@@ -44,7 +44,7 @@ $ python ./codeslator/src/main.py -f <your code filepath> -fl <your code languag
 where
 - `-f / --file` (required): The filepath of the code to translate.
 - `-fl / --from_language` (required): The language to translate the code from (please see 
-the supported languaged below).
+the supported languages below).
 - `-tl / --to_language` (required): The language to translate the code to.
 - `-m / --model` (optional): The model to use for the code translation. By default, `gpt-4o` will be used.
 
