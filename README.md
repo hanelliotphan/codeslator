@@ -4,11 +4,11 @@
 Author: Han-Elliot Phan
 Email: hanelliotphan@gmail.com
 
-Last update: February 20, 2025
+Last update: March 1, 2025
 ```
 
 ## Brief Description
-This project is to take in a file of code and translate it into another language 
+This project is to input a file of code and translate it into another language 
 that is optimized and executable.
 
 ## Architecture
@@ -46,7 +46,8 @@ where
 - `-fl / --from_language` (required): The language to translate the code from (please see 
 the supported languages below).
 - `-tl / --to_language` (required): The language to translate the code to.
-- `-m / --model` (optional): The model to use for the code translation. By default, `gpt-4o` will be used.
+- `-m / --model` (optional): The model to use for the code translation. By default, `gpt-4o`
+will be used.
 
 You will find the result code file under the `./files` folder.
 
